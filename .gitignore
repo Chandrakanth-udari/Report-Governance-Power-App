@@ -1,0 +1,16 @@
+# OS / editor
+.DS_Store
+Thumbs.db
+desktop.ini
+*~
+.vscode/
+
+# Power Platform binary source files (commit unpacked YAML, not these)
+*.msapp
+*.pbix
+*.pbip.bak
+
+# Local secrets / connection details — never commit
+*.env
+appsettings.local.json
+**/connections.local.json
