@@ -4,12 +4,20 @@ A Power Apps Canvas app that manages the full **report validation and certificat
 
 > **Client engagement.** Built as a production solution for a client in the commercial door & hardware manufacturing industry. Report names, workspaces, and user labels shown in the screenshots are anonymized sample data.
 
-## Overview
+## The Problem
 
-When business reports drive decisions, "is this report trustworthy?" needs a real answer. This app gives that answer a defined, auditable workflow with two audiences:
+Business reports drive decisions — but "can I trust this number?" usually had no real answer. A report would be built, shared, and quietly relied upon with no record of whether anyone had checked it against the source system, who signed off, or when. When a figure later turned out to be wrong, there was no trail: no validations, no approver, no history. Developers and clients also had no shared, controlled space to disagree — a client who doubted a number had nowhere formal to flag it, and the developer had no structured way to see and resolve that objection.
 
-- **Internal developers** — register reports, run reconciliation validations against source systems, and submit reports for client approval.
-- **Clients** — review the validations behind a report and formally **Approve** or **Reject** its certification.
+## The Solution
+
+Give "is this report trustworthy?" a defined, auditable workflow with two clearly separated audiences:
+
+1. **Developers** register a report and run **reconciliation validations** — source-system value vs. report value, with variance, variance %, and a PASS / FAIL / WARN result recorded per check.
+2. Once validated, a developer **submits** the report for client approval; an assigned client is notified by a **Power Automate** email.
+3. **Clients** review the validations behind the report and formally **Approve** (→ Certified) or **Reject** it. On rejection, the client **flags which validation** looked wrong (or picks "Other" and gives a reason), which the developer sees in a dedicated detail view.
+4. **Every status change is written to an audit history table** — who, when, from-status → to-status, and notes — so the report's trust journey is permanently recorded.
+
+Access is role- and workspace-aware: clients only see reports in workspaces they're assigned to, with **Approver vs. Viewer** rights controlling who can actually approve or reject.
 
 ## Status Lifecycle
 
@@ -17,7 +25,23 @@ When business reports drive decisions, "is this report trustworthy?" needs a rea
 Draft → Under Review → Validated → Pending Client Approval → Certified / Rejected
 ```
 
-Every transition is written to an audit history table.
+## How It Works
+
+```
+ Developer (internal)                      Client (external)
+ ┌──────────────────────────────┐         ┌──────────────────────────────┐
+ │ register report               │         │ review validations            │
+ │ run validations (src vs PBI)  │         │ Approve  → Certified          │
+ │ submit for approval ──────────┼────────►│ Reject   → flag validation    │
+ └──────────────┬───────────────┘  email  └──────────────┬───────────────┘
+                │  (Power Automate notifies client)       │
+                ▼                                          ▼
+   ┌───────────────────────────────────────────────────────────────┐
+   │ SQL: tbl_reports · tbl_validation_results · tbl_certification   │
+   │      tbl_users · tbl_user_workspaces · tbl_report_history       │
+   │      (every status change is logged to the history table)       │
+   └───────────────────────────────────────────────────────────────┘
+```
 
 ## Key Features
 
