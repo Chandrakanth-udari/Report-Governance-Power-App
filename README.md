@@ -2,7 +2,7 @@
 
 A Power Apps Canvas app that manages the full **report validation and certification lifecycle** — from a developer running data validations to a client formally approving (or rejecting) a report as certified.
 
-> **Client engagement.** Built as a production solution for a client in the commercial door & hardware manufacturing industry. Report names, workspaces, and user labels shown in the screenshots are anonymized sample data.
+> **Client engagement.** Built as a production solution for a client. Report names, workspaces, and user labels shown in the screenshots are anonymized sample data.
 
 ## The Problem
 
