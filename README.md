@@ -27,21 +27,7 @@ Draft → Under Review → Validated → Pending Client Approval → Certified /
 
 ## How It Works
 
-```
- Developer (internal)                      Client (external)
- ┌──────────────────────────────┐         ┌──────────────────────────────┐
- │ register report               │         │ review validations            │
- │ run validations (src vs PBI)  │         │ Approve  → Certified          │
- │ submit for approval ──────────┼────────►│ Reject   → flag validation    │
- └──────────────┬───────────────┘  email  └──────────────┬───────────────┘
-                │  (Power Automate notifies client)       │
-                ▼                                          ▼
-   ┌───────────────────────────────────────────────────────────────┐
-   │ SQL: tbl_reports · tbl_validation_results · tbl_certification   │
-   │      tbl_users · tbl_user_workspaces · tbl_report_history       │
-   │      (every status change is logged to the history table)       │
-   └───────────────────────────────────────────────────────────────┘
-```
+![Report governance workflow](screenshots/00-report-governance-workflow.png)
 
 ## Key Features
 
